@@ -459,13 +459,19 @@ function FichaClinica() {
                 <div><label className="block text-[10px] md:text-xs font-bold text-gray-700 mb-1">Tratamiento:</label><input type="text" value={procedimientoConsentimiento} onChange={(e) => setProcedimientoConsentimiento(e.target.value)} className="w-full border border-gray-300 rounded p-2 text-xs md:text-sm outline-none focus:border-blue-500" /></div>
                 <div><label className="block text-[10px] md:text-xs font-bold text-gray-700 mb-1">Texto Legal:</label><textarea rows="5" value={textoConsentimiento} onChange={(e) => setTextoConsentimiento(e.target.value)} className="w-full border border-gray-300 rounded p-2 text-xs md:text-sm text-gray-700 outline-none focus:border-blue-500" /></div>
 
-                {/* CONTENEDOR CON SCROLL HORIZONTAL PARA FIRMA */}
+                {/* CONTENEDOR CON SCROLL HORIZONTAL PARA FIRMA Y ZONA SEGURA */}
                 <div>
-                  <label className="block text-[10px] md:text-xs font-bold text-gray-700 mb-1">Firma Digital (Deslice si es necesario):</label>
+                  <label className="block text-[10px] md:text-xs font-bold text-gray-700 mb-1">Firma Digital (Deslice usando la franja gris si no cabe):</label>
                   <div className="w-full overflow-x-auto border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
-                    <div style={{ width: '600px', height: '140px' }} className="relative shrink-0 mx-auto">
-                      <SignatureCanvas ref={firmaRef} penColor="black" canvasProps={{ width: 600, height: 140, className: 'cursor-crosshair absolute top-0 z-10' }} />
-                      <span className="absolute bottom-2 left-2 text-gray-400 text-[10px] select-none pointer-events-none">Firme aquí</span>
+                    <div style={{ width: '600px' }} className="flex flex-col shrink-0 mx-auto">
+                      <div style={{ height: '140px' }} className="relative">
+                        <SignatureCanvas ref={firmaRef} penColor="black" canvasProps={{ width: 600, height: 140, className: 'cursor-crosshair absolute top-0 z-10' }} />
+                        <span className="absolute bottom-2 left-2 text-gray-400 text-[10px] select-none pointer-events-none">Firme aquí (mouse o táctil)</span>
+                      </div>
+                      {/* ZONA SEGURA DE DESPLAZAMIENTO */}
+                      <div className="bg-slate-200 h-8 flex items-center justify-center text-[10px] font-bold text-slate-500 uppercase tracking-widest border-t border-gray-300">
+                        ⬅️ Arrastre desde aquí para moverte ➡️
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -481,16 +487,22 @@ function FichaClinica() {
           </div>
         )}
 
-        {/* Modal Odontograma (Dibujar) - Con Scroll Horizontal */}
+        {/* Modal Odontograma (Dibujar) - Con Scroll Horizontal y Zona Segura */}
         {consultaOdontograma && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-2 md:p-4">
             <div className="bg-white rounded-xl shadow-xl p-4 md:p-6 w-full max-w-4xl max-h-[95vh] flex flex-col">
               <div className="flex justify-between items-center mb-3"><h3 className="text-base md:text-lg font-bold">Trazar Odontograma</h3><button onClick={() => setConsultaOdontograma(null)} className="text-red-500 font-bold">✕</button></div>
 
               <div className="w-full overflow-x-auto overflow-y-hidden border-2 border-gray-300 rounded bg-gray-50 flex-1">
-                <div className="relative mx-auto" style={{ width: '800px', height: '400px' }}>
-                  <img src="/odontograma_fondo.png" alt="Fondo" className="absolute top-0 left-0 w-full h-full object-contain opacity-40 pointer-events-none" />
-                  <SignatureCanvas ref={canvasRef} penColor="red" canvasProps={{ width: 800, height: 400, className: 'absolute top-0 left-0 z-10 cursor-crosshair' }} />
+                <div className="flex flex-col mx-auto" style={{ width: '800px' }}>
+                  <div className="relative" style={{ width: '800px', height: '400px' }}>
+                    <img src="/odontograma_fondo.png" alt="Fondo" className="absolute top-0 left-0 w-full h-full object-contain opacity-40 pointer-events-none" />
+                    <SignatureCanvas ref={canvasRef} penColor="red" canvasProps={{ width: 800, height: 400, className: 'absolute top-0 left-0 z-10 cursor-crosshair' }} />
+                  </div>
+                  {/* ZONA SEGURA DE DESPLAZAMIENTO TÁCTIL */}
+                  <div className="bg-slate-200 h-10 flex items-center justify-center text-xs md:text-sm font-bold text-slate-500 uppercase tracking-widest border-t border-gray-300 shadow-inner">
+                    ⬅️ Arrastra desde esta franja para moverte ➡️
+                  </div>
                 </div>
               </div>
 
