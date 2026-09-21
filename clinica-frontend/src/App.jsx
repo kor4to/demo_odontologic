@@ -23,10 +23,10 @@ function PanelPrincipal() {
   })
 
   const cargarPacientes = () => {
-    fetch('http://127.0.0.1:8000/pacientes').then(res => res.json()).then(data => setPacientes(data))
+    fetch('https://api-clinica-backend-ffw2.onrender.com/pacientes').then(res => res.json()).then(data => setPacientes(data))
   }
   const cargarAgenda = () => {
-    fetch('http://127.0.0.1:8000/agenda').then(res => res.json()).then(data => setAgenda(data))
+    fetch('https://api-clinica-backend-ffw2.onrender.com/agenda').then(res => res.json()).then(data => setAgenda(data))
   }
 
   useEffect(() => { cargarPacientes(); cargarAgenda(); }, [])
@@ -35,7 +35,7 @@ function PanelPrincipal() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    fetch('http://127.0.0.1:8000/pacientes', {
+    fetch('https://api-clinica-backend-ffw2.onrender.com/pacientes', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData)
     }).then(() => {
       cargarPacientes()
@@ -244,11 +244,11 @@ function FichaClinica() {
   })
 
   const cargarDatos = () => {
-    fetch(`http://127.0.0.1:8000/pacientes/${id_paciente}`).then(res => res.json()).then(data => setPaciente(data))
-    fetch(`http://127.0.0.1:8000/pacientes/${id_paciente}/consultas`).then(res => res.json()).then(data => setConsultas(data))
-    fetch(`http://127.0.0.1:8000/pacientes/${id_paciente}/radiografias`).then(res => res.json()).then(data => setRadiografias(data))
-    fetch(`http://127.0.0.1:8000/pacientes/${id_paciente}/odontogramas`).then(res => res.json()).then(data => setOdontogramas(data))
-    fetch(`http://127.0.0.1:8000/pacientes/${id_paciente}/consentimientos`).then(res => res.json()).then(data => setConsentimientos(data))
+    fetch(`https://api-clinica-backend-ffw2.onrender.com/pacientes/${id_paciente}`).then(res => res.json()).then(data => setPaciente(data))
+    fetch(`https://api-clinica-backend-ffw2.onrender.com/pacientes/${id_paciente}/consultas`).then(res => res.json()).then(data => setConsultas(data))
+    fetch(`https://api-clinica-backend-ffw2.onrender.com/pacientes/${id_paciente}/radiografias`).then(res => res.json()).then(data => setRadiografias(data))
+    fetch(`https://api-clinica-backend-ffw2.onrender.com/pacientes/${id_paciente}/odontogramas`).then(res => res.json()).then(data => setOdontogramas(data))
+    fetch(`https://api-clinica-backend-ffw2.onrender.com/pacientes/${id_paciente}/consentimientos`).then(res => res.json()).then(data => setConsentimientos(data))
   }
 
   useEffect(() => { cargarDatos() }, [id_paciente])
@@ -258,12 +258,12 @@ function FichaClinica() {
 
   const agendarCita = (e) => {
     e.preventDefault()
-    fetch('http://127.0.0.1:8000/consultas', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(formAgenda) }).then(() => { cargarDatos(); setFormAgenda({...formAgenda, motivo: ''}); alert("Cita agendada."); })
+    fetch('https://api-clinica-backend-ffw2.onrender.com/consultas', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(formAgenda) }).then(() => { cargarDatos(); setFormAgenda({...formAgenda, motivo: ''}); alert("Cita agendada."); })
   }
 
   const guardarHistoriaClinica = (e) => {
     e.preventDefault()
-    fetch(`http://127.0.0.1:8000/consultas/${consultaAEditar.id_consulta}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(consultaAEditar) }).then(() => { cargarDatos(); setConsultaAEditar(null); alert("Historia clínica guardada."); })
+    fetch(`https://api-clinica-backend-ffw2.onrender.com/consultas/${consultaAEditar.id_consulta}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(consultaAEditar) }).then(() => { cargarDatos(); setConsultaAEditar(null); alert("Historia clínica guardada."); })
   }
 
   const guardarOdontograma = () => {
@@ -271,7 +271,7 @@ function FichaClinica() {
     const dataURL = canvasRef.current.getCanvas().toDataURL('image/png');
     fetch(dataURL).then(res => res.blob()).then(blob => {
         const formData = new FormData(); formData.append('id_paciente', id_paciente); formData.append('id_consulta', consultaOdontograma.id_consulta); formData.append('archivo', blob, `odontograma_${consultaOdontograma.id_consulta}.png`);
-        fetch('http://127.0.0.1:8000/odontogramas', { method: 'POST', body: formData }).then(() => { alert("Odontograma guardado permanentemente."); setConsultaOdontograma(null); cargarDatos(); })
+        fetch('https://api-clinica-backend-ffw2.onrender.com/odontogramas', { method: 'POST', body: formData }).then(() => { alert("Odontograma guardado permanentemente."); setConsultaOdontograma(null); cargarDatos(); })
       });
   }
 
@@ -279,7 +279,7 @@ function FichaClinica() {
     e.preventDefault()
     if (!fotoFile) return;
     const formData = new FormData(); formData.append('id_paciente', id_paciente); formData.append('id_consulta', modalSubirFoto); formData.append('descripcion', fotoDescripcion); formData.append('archivo', fotoFile);
-    fetch('http://127.0.0.1:8000/radiografias', { method: 'POST', body: formData }).then(() => { cargarDatos(); setFotoFile(null); setFotoDescripcion(''); setModalSubirFoto(null); })
+    fetch('https://api-clinica-backend-ffw2.onrender.com/radiografias', { method: 'POST', body: formData }).then(() => { cargarDatos(); setFotoFile(null); setFotoDescripcion(''); setModalSubirFoto(null); })
   }
 
   const abrirModalNuevoConsentimiento = () => {
@@ -294,7 +294,7 @@ function FichaClinica() {
     const dataURL = firmaRef.current.getCanvas().toDataURL('image/png');
     fetch(dataURL).then(res => res.blob()).then(blob => {
         const formData = new FormData(); formData.append('id_paciente', id_paciente); formData.append('procedimiento', procedimientoConsentimiento); formData.append('texto_consentimiento', textoConsentimiento); formData.append('archivo', blob, `firma_${id_paciente}.png`);
-        fetch('http://127.0.0.1:8000/consentimientos', { method: 'POST', body: formData }).then(() => { alert("Consentimiento firmado y guardado."); setMostrarModalFirma(false); cargarDatos(); })
+        fetch('https://api-clinica-backend-ffw2.onrender.com/consentimientos', { method: 'POST', body: formData }).then(() => { alert("Consentimiento firmado y guardado."); setMostrarModalFirma(false); cargarDatos(); })
       });
   }
 
@@ -412,7 +412,7 @@ function FichaClinica() {
                         {fotosDeEstaConsulta.length === 0 ? ( <p className="text-[10px] md:text-xs text-gray-400 italic">No hay fotos.</p> ) : (
                           <div className="flex gap-2 overflow-x-auto pb-2">
                             {fotosDeEstaConsulta.map(rad => (
-                              <a key={rad.id_registro} href={`http://127.0.0.1:8000/${rad.ubicacion_archivo}`} target="_blank" rel="noreferrer" className="shrink-0"><img src={`http://127.0.0.1:8000/${rad.ubicacion_archivo}`} alt={rad.tipo} className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-md border border-gray-200" /></a>
+                              <a key={rad.id_registro} href={`https://api-clinica-backend-ffw2.onrender.com/${rad.ubicacion_archivo}`} target="_blank" rel="noreferrer" className="shrink-0"><img src={`https://api-clinica-backend-ffw2.onrender.com/${rad.ubicacion_archivo}`} alt={rad.tipo} className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-md border border-gray-200" /></a>
                             ))}
                           </div>
                         )}
@@ -511,7 +511,7 @@ function FichaClinica() {
               <div className="w-full overflow-x-auto border-2 border-gray-300 rounded bg-white flex-1">
                 <div className="relative mx-auto" style={{ width: '800px', height: '400px' }}>
                   <img src="/odontograma_fondo.png" alt="Fondo" className="absolute top-0 left-0 w-full h-full object-contain opacity-40 pointer-events-none" />
-                  <img src={`http://127.0.0.1:8000/${visorOdontograma.ubicacion_archivo}`} alt="Trazos" className="absolute top-0 left-0 w-full h-full object-contain pointer-events-none" />
+                  <img src={`https://api-clinica-backend-ffw2.onrender.com/${visorOdontograma.ubicacion_archivo}`} alt="Trazos" className="absolute top-0 left-0 w-full h-full object-contain pointer-events-none" />
                 </div>
               </div>
               <div className="mt-4 text-right">
@@ -537,7 +537,7 @@ function FichaClinica() {
                 {visorConsentimiento.texto_consentimiento}
               </div>
               <div className="flex flex-col items-center justify-center pt-4 border-t border-dashed border-gray-300">
-                <div className="h-16 md:h-20 mb-1 flex items-center justify-center"><img src={`http://127.0.0.1:8000/${visorConsentimiento.ubicacion_firma}`} alt="Firma registrada" className="h-full object-contain" /></div>
+                <div className="h-16 md:h-20 mb-1 flex items-center justify-center"><img src={`https://api-clinica-backend-ffw2.onrender.com/${visorConsentimiento.ubicacion_firma}`} alt="Firma registrada" className="h-full object-contain" /></div>
                 <div className="w-48 md:w-64 border-t border-gray-800 text-center pt-1"><p className="text-[10px] md:text-xs font-bold text-gray-800">{paciente.nombres} {paciente.apellidos}</p><p className="text-[9px] md:text-[11px] text-gray-500">DNI: {paciente.dni}</p></div>
               </div>
               <div className="flex flex-col sm:flex-row justify-end gap-2 md:gap-3 mt-6 pt-4 border-t border-gray-100">
@@ -577,7 +577,7 @@ function PantallaLogin({ onLogin }) {
     formData.append('username', usuario);
     formData.append('password', password);
 
-    fetch('http://127.0.0.1:8000/login', {
+    fetch('https://api-clinica-backend-ffw2.onrender.com/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: formData
